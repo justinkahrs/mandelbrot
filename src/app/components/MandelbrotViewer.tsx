@@ -26,7 +26,6 @@ export default function MandelbrotViewer() {
   const [hueShift, setHueShift] = useState(0);
   const [scale, setScale] = useState(100);
 
-
   const center = useMemo(() => ({ x: -0.7491, y: 0.1 }), []);
   const colorSpeed = 0.1;
   const zoomSpeed = 1.005;
@@ -211,7 +210,11 @@ export default function MandelbrotViewer() {
       gl.enableVertexAttribArray(aPositionLoc);
       gl.vertexAttribPointer(aPositionLoc, 2, gl.FLOAT, false, 0, 0);
 
-      gl.uniform2f(uResolutionLoc, canvas.width, canvas.height);
+      if (canvas) {
+        gl.uniform2f(uResolutionLoc, canvas.width, canvas.height);
+      } else {
+        console.error("Canvas is null.");
+      }
       gl.uniform1f(uScaleLoc, scale);
       gl.uniform1f(uHueShiftLoc, hueShift);
       gl.uniform2f(uCenterLoc, center.x, center.y);

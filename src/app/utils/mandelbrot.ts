@@ -13,18 +13,20 @@ export function renderMandelbrot(
   const data = imageData.data;
   for (let px = 0; px < width; px++) {
     for (let py = 0; py < height; py++) {
-      let x0 = xMin + (px / width) * (xMax - xMin);
-      let y0 = yMin + (py / height) * (yMax - yMin);
-      let x = 0, y = 0, iter = 0;
+      const x0 = xMin + (px / width) * (xMax - xMin);
+      const y0 = yMin + (py / height) * (yMax - yMin);
+      let x = 0;
+      let y = 0;
+      let iter = 0;
       while (x * x + y * y <= 4 && iter < maxIter) {
-        let xTemp = x * x - y * y + x0;
+        const xTemp = x * x - y * y + x0;
         y = 2 * x * y + y0;
         x = xTemp;
         iter++;
       }
-      let idx = (py * width + px) * 4;
+      const idx = (py * width + px) * 4;
       const ratio = iter / maxIter;
-      const hue = ((ratio * 360) + hueShift) % 360;
+      const hue = (ratio * 360 + hueShift) % 360;
       const c = hslToRgb(hue / 360, 1, 0.5);
       data[idx] = c.r;
       data[idx + 1] = c.g;
@@ -49,6 +51,6 @@ function hslToRgb(h: number, s: number, l: number) {
   return {
     r: Math.round(hue2rgb(p, q, h + 1 / 3) * 255),
     g: Math.round(hue2rgb(p, q, h) * 255),
-    b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255)
+    b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255),
   };
 }
